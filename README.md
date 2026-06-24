@@ -1,0 +1,242 @@
+# AgriZone AI — Farm Image Zone Planner using AWS Bedrock
+
+AgriZone AI is an AWS-powered computer vision project that accepts a farm/field image and a text instruction, analyzes the highlighted farming area, and returns a practical zoning recommendation for agricultural use.
+
+This project is designed to demonstrate:
+
+- AWS Lambda backend development
+- Amazon Bedrock multimodal model integration
+- API Gateway request handling
+- Base64 image processing
+- S3-based image input workflow
+- Recruiter-friendly cloud AI architecture
+
+---
+
+## Project Goal
+
+Farmers often need to divide a selected field area into usable zones for irrigation, crop planning, soil treatment, fertilization, or harvesting. This project takes an uploaded field image and a natural-language instruction, then uses an AI model to recommend how the selected area can be divided into equal and practical zones.
+
+Example prompt:
+
+```text
+You will receive an image showing a green-coloured dotted boundary. Please divide the highlighted area into X zones of roughly equal size. These zones are for agricultural use, so make them practical and regular in shape. Do not use any external maps or resources. Only analyze the provided image.
+```
+
+---
+
+## Important Note About Image Output
+
+Amazon Nova Pro can accept image + text input, but it returns text output only.  
+For actual generated/edited image output, this project can be extended by adding an image generation model such as Stable Diffusion XL, Stable Image, or Titan Image Generator.
+
+Current version:
+
+```text
+Image + Text Input  →  Amazon Nova Pro  →  Text Recommendation Output
+```
+
+Future version:
+
+```text
+Image + Text Input  →  Nova Pro Analysis  →  Image Generation Model  →  Image + Text Output
+```
+
+---
+
+## Architecture
+
+```text
+User / Frontend
+     |
+     | POST request with base64 image + prompt
+     v
+API Gateway
+     |
+     v
+AWS Lambda
+     |
+     | Sends image + prompt
+     v
+Amazon Bedrock - Nova Pro
+     |
+     | Text response
+     v
+AWS Lambda Response
+```
+
+Optional S3 workflow:
+
+```text
+S3 Image Upload
+     |
+     v
+S3 Predictor Script
+     |
+     v
+API Gateway / Lambda
+     |
+     v
+Bedrock
+```
+
+---
+
+## Folder Structure
+
+```text
+agri-zone-ai-bedrock/
+│
+├── lambda_function.py
+├── s3_predictor.py
+├── local_api_test.py
+├── requirements.txt
+├── .env.example
+├── sample_event.json
+├── sample_payload.json
+├── iam_policy_bedrock.json
+├── DEPLOYMENT.md
+├── PROJECT_SUMMARY.md
+└── README.md
+```
+
+---
+
+## Tech Stack
+
+- Python
+- AWS Lambda
+- Amazon API Gateway
+- Amazon Bedrock
+- Amazon Nova Pro
+- Amazon S3
+- boto3
+- REST API
+- Base64 image encoding
+
+---
+
+## Main Features
+
+- Accepts image input as base64
+- Accepts natural-language text prompt
+- Sends multimodal request to Amazon Bedrock Nova Pro
+- Returns clean JSON response
+- Handles missing image input
+- Includes traceback for debugging
+- Supports local testing
+- Includes S3 image loading script
+- Includes IAM policy example
+
+---
+
+## Example API Request
+
+```json
+{
+  "image_base64": "base64_encoded_image_here",
+  "text_input": "You will receive an image showing a green-coloured dotted boundary. Please divide the highlighted area into 4 zones of roughly equal size. These zones are for agricultural use, so make them practical and regular in shape.",
+  "metadata": {
+    "user": "test_user",
+    "timestamp": "2026-06-24T00:00:00"
+  }
+}
+```
+
+---
+
+## Example API Response
+
+```json
+{
+  "status": "success",
+  "reply": "The selected area can be divided into 4 practical zones using two horizontal and two vertical divisions. This creates four regular sections that are easier for crop planning, irrigation, and field access."
+}
+```
+
+---
+
+## Lambda Environment
+
+Recommended runtime:
+
+```text
+Python 3.11
+```
+
+Required AWS permissions:
+
+```text
+bedrock:InvokeModel
+logs:CreateLogGroup
+logs:CreateLogStream
+logs:PutLogEvents
+```
+
+---
+
+## Model Used
+
+```text
+amazon.nova-pro-v1:0
+```
+
+Region:
+
+```text
+us-east-1
+```
+
+---
+
+## How to Run Locally
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run API test:
+
+```bash
+python local_api_test.py
+```
+
+Run S3 predictor:
+
+```bash
+python s3_predictor.py
+```
+
+---
+
+## Deployment Steps
+
+1. Create an AWS Lambda function.
+2. Add the code from `lambda_function.py`.
+3. Attach IAM permission for Bedrock invocation.
+4. Create API Gateway HTTP API or REST API.
+5. Connect API Gateway to Lambda.
+6. Deploy the API.
+7. Test using `local_api_test.py`.
+
+More details are available in `DEPLOYMENT.md`.
+
+---
+
+## Future Improvements
+
+- Add Stable Diffusion XL or Titan Image Generator for actual image output
+- Use OpenCV to draw zone lines programmatically
+- Store request history in DynamoDB
+- Upload input/output images to S3
+- Add frontend interface using React
+- Add authentication using Cognito
+- Add farm-specific zone recommendations based on soil, water, and crop type
+
+---
+
+## Recruiter Summary
+
+AgriZone AI is a practical AI + cloud project that combines AWS Lambda, Bedrock multimodal AI, S3 image handling, and API Gateway to solve a real-world agricultural planning problem. It demonstrates backend engineering, cloud integration, AI model invocation, JSON API design, and production-oriented project organization.

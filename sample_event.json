@@ -1,0 +1,3 @@
+{
+  "body": "{\"image_base64\": \"base64_encoded_image_here\", \"text_input\": \"You will receive an image showing a green-coloured dotted boundary. Please divide the highlighted area into 4 zones of roughly equal size. These zones are for agricultural use, so make them practical and regular in shape. Do not use any external maps or resources. Only analyze the provided image.\", \"metadata\": {\"user\": \"test_user\", \"timestamp\": \"2026-06-24T00:00:00\"}}"
+}
