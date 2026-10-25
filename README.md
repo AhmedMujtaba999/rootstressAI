@@ -263,6 +263,6 @@ More details are available in `DEPLOYMENT.md`.
 
 ---
 
-## Recruiter Summary
+## Summary
 
 Root Stress Detection System is a practical AI + cloud project that combines AWS Lambda, Bedrock multimodal AI, S3 image handling, and API Gateway to solve a real-world agricultural planning problem. It demonstrates backend engineering, cloud integration, AI model invocation, JSON API design, and production-oriented project organization.
